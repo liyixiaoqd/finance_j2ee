@@ -1,6 +1,7 @@
 package com.finance.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,9 @@ import com.finance.enums.UserEnum.UserWaterType;
 import com.finance.form.UserSearchForm;
 import com.finance.pojo.User;
 import com.finance.pojo.UserAccount;
+import com.finance.pojo.UserFinanceWater;
 import com.finance.service.UserAccountService;
+import com.finance.service.UserFinanceWaterService;
 import com.finance.service.UserService;
 import com.finance.util.AssembleString;
 import com.finance.util.Page;
@@ -28,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserAccountDao userAccountDao;
+	
+	@Autowired
+	private UserFinanceWaterService ufws;
 
 	@SuppressWarnings("unchecked")
 	public List<User> listUserByPage(Page page) {
@@ -40,24 +46,6 @@ public class UserServiceImpl implements UserService {
 		return users;
 	}
 
-	@Transactional(readOnly = false)
-	@Override
-	public void add(User user) {
-		// TODO Auto-generated method stub
-		userDao.addObject(user);
-
-		UserAccount ua = new UserAccount();
-		ua.setType(UserWaterType.score);
-		ua.setUser(user);
-		ua.setValue(0.0f);
-		userAccountDao.addObject(ua);
-
-		ua = new UserAccount();
-		ua.setType(UserWaterType.eCash);
-		ua.setUser(user);
-		ua.setValue(0.0f);
-		userAccountDao.addObject(ua);
-	}
 
 	@Override
 	public int getTotal() {
@@ -137,6 +125,36 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User user) {
 		// TODO Auto-generated method stub
 		userDao.updateObject(user);
+	}
+
+
+	@Transactional(readOnly = false)
+	@Override
+	public List<Integer> register(User user, List<UserAccount> userAccounts) {
+		// TODO Auto-generated method stub
+		List<Integer> ufwIds = new ArrayList<Integer>();
+		userDao.addObject(user);
+		for(UserAccount ua: userAccounts){
+			ua.setUser(user);
+			userAccountDao.addObject(ua);
+			
+			if(ua.getValue()>0.0){
+				UserFinanceWater ufw=new UserFinanceWater();
+				ufw.setAmount(ua.getValue());
+				ufw.setChannel("registe");
+				ufw.setNew_amount(ua.getValue());
+				ufw.setOld_amount(0.0f);
+				ufw.setOperdate(new Date());
+				ufw.setReason(ua.getReason());
+				ufw.setUser(user);
+				ufw.setType(ua.getType());
+				
+				ufws.addBase(ufw);
+				ufwIds.add(ufw.getId());
+			}
+		}
+		
+		return ufwIds;
 	}
 
 }

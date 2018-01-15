@@ -8,25 +8,36 @@
 	<constant name="struts.multipart.maxSize" value="10240000" />
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.objectFactory" value="spring" />
-	
+
 	<!-- namespace表示文件路径 及 请求的前缀 -->
 	<package name="basicstruts" extends="struts-default" namespace="/">
 		<!-- struts2.5 新增通配符允许 -->
 		<global-allowed-methods>regex:.*</global-allowed-methods>
-		
+
 		<action name="user_*" class="userActionBean" method="{1}">
 			<result name="listUser">jsp/listUser.jsp</result>
 			<result name="listUserWater">jsp/listUserWater.jsp</result>
-			<result name="listUserWaterRedirect" type="redirect">user_water_list.action?user.id=${user.id}</result>
+			<result name="listUserWaterRedirect" type="redirect">user_water_list.action?user.id=${user.id}
+			</result>
 		</action>
-		
+
 		<action name="export_*" class="exportActionBean" method="{1}">
 			<result name="excel" type="stream">
-                <param name="contentType">application/vnd.ms-excel</param>
-                <param name="inputName">excelStreamName</param>            
-                <param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
-                <param name="bufferSize">1024</param>
-            </result>
+				<param name="contentType">application/vnd.ms-excel</param>
+				<param name="inputName">excelStreamName</param>
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+	</package>
+
+	<package name="apistruts" extends="struts-default, json-default" namespace="/api">
+		<global-allowed-methods>regex:.*</global-allowed-methods>
+		<!--  api_v1_test -->
+		<action name="v1_*" class="apiActionBeanV1" method="{1}">
+			<result name="jsonReturn" type="json">
+				<param name="root">dataJson</param>
+			</result>
 		</action>
 	</package>
 

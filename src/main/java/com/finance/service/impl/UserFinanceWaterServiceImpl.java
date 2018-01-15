@@ -71,4 +71,10 @@ public class UserFinanceWaterServiceImpl implements UserFinanceWaterService{
 		ufwd.addObject(ufw);
 	}
 
+	@Override
+	public void addBase(UserFinanceWater ufw) {
+		// TODO Auto-generated method stub
+		ufwd.addObject(ufw);
+	}
+
 }

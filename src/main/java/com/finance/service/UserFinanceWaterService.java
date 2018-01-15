@@ -12,4 +12,6 @@ public interface UserFinanceWaterService {
 	public int getTotalByUser(User user);
 	
 	public void addWater(User user,UserAddWaterForm uawForm);
+	
+	public void addBase(UserFinanceWater ufw);
 }

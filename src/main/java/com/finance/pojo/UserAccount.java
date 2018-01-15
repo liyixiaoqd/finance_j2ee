@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.finance.enums.UserEnum.UserWaterType;
 
@@ -39,6 +40,10 @@ public class UserAccount {
 
 	@Column(name = "updated_at")
 	private Date updated_at;
+	
+	//注册时临时使用
+	@Transient
+	private String reason;
 
 	public Integer getId() {
 		return id;
@@ -87,4 +92,13 @@ public class UserAccount {
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
 	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
 }
