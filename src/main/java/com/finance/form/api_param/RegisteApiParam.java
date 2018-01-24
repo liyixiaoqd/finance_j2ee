@@ -162,7 +162,7 @@ public class RegisteApiParam extends ApiParam {
 	@Override
 	public String checkParam() {
 		// TODO Auto-generated method stub
-		return checkParam(fieldNames);
+		return super.checkParam(fieldNames);
 	}
 	
 	public static void main(String args[]) throws NoSuchFieldException, SecurityException{

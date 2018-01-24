@@ -27,6 +27,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		// TODO Auto-generated method stub
 		List<UserAccount> userAccountL = (List<UserAccount>) userAccountDao
 				.listByBean("from UserAccount where user=" + user.getId(), null, null, false);
+		user.setUserAccounts(userAccountL);
 		for (UserAccount ua : userAccountL) {
 			if (ua.getType() == UserWaterType.eCash)
 				user.seteCash(ua.getValue());

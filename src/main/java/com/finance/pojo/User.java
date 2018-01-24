@@ -1,12 +1,16 @@
 package com.finance.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -41,6 +45,10 @@ public class User {
 
 	@Column(name = "updated_at")
 	private Date updated_at;
+	
+	//不适用延迟加载策略, 会有no session问题
+	@Transient
+	private List<UserAccount> userAccounts;
 	
 	//通过user_account注入,方便前台显示
 	@Transient
@@ -141,4 +149,13 @@ public class User {
 		this.score = score;
 	}
 
+	public List<UserAccount> getUserAccounts() {
+		return userAccounts;
+	}
+
+	public void setUserAccounts(List<UserAccount> userAccounts) {
+		this.userAccounts = userAccounts;
+	}
+
+	
 }

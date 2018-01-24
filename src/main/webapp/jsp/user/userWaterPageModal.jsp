@@ -35,7 +35,7 @@ div.reason span{
 				return false;
 			if(!checkNumberAndZero("amount","金额"))
 				return false;
-						
+
 			var operValue=$("#operator_type").val();
 			if(operValue=="Sub"){
 				var typeValue=$("#water_type").val();

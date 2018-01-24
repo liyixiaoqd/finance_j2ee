@@ -31,7 +31,9 @@ function checkNumberAndZero(id,name){
 	if(value<0.001){
 		alert(name + "必须大于0")
 		$("#" + id).focus();
+		return false;
 	}
+	return true;
 }
 
 function checkInt(id, name) {

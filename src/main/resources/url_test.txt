@@ -1,0 +1,5 @@
+--创建用户
+http://127.0.0.1:8080/finance/api/v1_registe?system=web_test&userid=001&username=测试用户1&email=lyx001@hotmail.com&accountInitAmount=50.5&scoreInitAmount=150000.8&scoreInitReason=VIP用户
+
+--查询用户
+http://127.0.0.1:8080/finance/api/v1_obtain?system=web_test&userid=001
