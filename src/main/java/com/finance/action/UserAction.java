@@ -15,6 +15,7 @@ import com.finance.service.UserAccountService;
 import com.finance.service.UserFinanceWaterService;
 import com.finance.service.UserService;
 import com.finance.util.Page;
+import com.finance.util.exception.PojoCheckException;
 
 /***
  * 用户相关ACTION -- 账户,流水等
@@ -82,7 +83,12 @@ public class UserAction extends EnumParam{
 	}
 	
 	public String water_add(){
-		ufwService.addWater(user, uawForm);
+		try {
+			ufwService.addWater(user, uawForm);
+		} catch (PojoCheckException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "listUserWaterRedirect";
 	}
 	

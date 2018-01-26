@@ -13,8 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.finance.enums.UserEnum;
+import com.finance.util.exception.PojoCheckException;
 
 @Entity
 @Table(name = "user_finance_water")
@@ -31,13 +33,13 @@ public class UserFinanceWater {
 	@Column(name = "channel", length = 20, nullable = false)
 	private String channel;
 
-	@Column(name = "amount", scale = 8, precision = 2, nullable = false)
+	@Column(name = "amount", scale = 12, precision = 2, nullable = false)
 	private float amount;
 	
-	@Column(name = "old_amount", scale = 8, precision = 2, nullable = false)
+	@Column(name = "old_amount", scale = 12, precision = 2, nullable = false)
 	private float old_amount;
 	
-	@Column(name = "new_amount", scale = 8, precision = 2, nullable = false)
+	@Column(name = "new_amount", scale = 12, precision = 2, nullable = false)
 	private float new_amount;
 
 	@Enumerated(EnumType.STRING)
@@ -50,6 +52,19 @@ public class UserFinanceWater {
 	private Date created_at;
 	private Date updated_at;
 
+	public void check() throws PojoCheckException{
+		if(new_amount<0.001){
+			throw new PojoCheckException("变化后金额不可小于0");
+		}
+	}
+	
+	public String getSymbol(){
+		if(amount<-0.001)
+			return "Sub";
+		else
+			return "Add";
+	}
+	
 	public String getTypeDesc(){
 		return type.getDesc();
 	}

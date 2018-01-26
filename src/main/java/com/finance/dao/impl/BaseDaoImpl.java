@@ -1,7 +1,9 @@
 package com.finance.dao.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.finance.dao.BaseDao;
 import com.finance.util.Page;
+import com.finance.util.exception.PojoCheckException;
 
 public class BaseDaoImpl implements BaseDao {
 	@Autowired
@@ -116,7 +119,7 @@ public class BaseDaoImpl implements BaseDao {
 	}
 
 	@Override
-	public void addObject(Object bean) {
+	public void addObject(Object bean) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		try {
 			Method getMethod = bean.getClass().getMethod("getCreated_at");
@@ -129,11 +132,25 @@ public class BaseDaoImpl implements BaseDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		try {
+			Method checkMethod = bean.getClass().getMethod("check");
+			System.out.println(checkMethod.getName() + ";" + checkMethod.getReturnType());
+			checkMethod.invoke(bean);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (e instanceof InvocationTargetException)
+				throw new PojoCheckException(e.getCause().getMessage());
+
+			System.out.println("check method call failure:" + e.getMessage());
+			e.printStackTrace();
+		}
+
 		getCurrentSession().save(bean);
 	}
 
 	@Override
-	public void updateObject(Object bean) {
+	public void updateObject(Object bean) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		try {
 			Method getMethod = bean.getClass().getMethod("getUpdated_at");
@@ -143,11 +160,53 @@ public class BaseDaoImpl implements BaseDao {
 				setMethod.invoke(bean, new Date());
 			}
 		} catch (Exception e) {
+			;
+		}
+
+		try {
+			Method checkMethod = bean.getClass().getMethod("check");
+			checkMethod.invoke(bean);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if (e instanceof InvocationTargetException)
+				throw new PojoCheckException(e.getCause().getMessage());
 		}
 
 		getCurrentSession().update(bean);
 	}
 
+	public List<?> listByPairParams(Page page,Object... pairParams){
+		String sql = getListStr(pairParams);
+		
+		return listByBean(sql, null, page, false);
+	
+	}
+	
+	private String getListStr(Object... pairParams) {
+		// 组装传入的各种参数
+		HashMap<String, Object> m = new HashMap<String, Object>();
+		for (int i = 0; i < pairParams.length; i = i + 2)
+			m.put(pairParams[i].toString(), pairParams[i + 1]);
+
+		StringBuilder sql = new StringBuilder("from " + pojoClass.getSimpleName());
+		int index = 0;
+		for (String key : m.keySet()) {
+			if (index == 0)
+				sql.append(" where ");
+			else
+				sql.append("and ");
+
+			if (m.get(key) == null)
+				sql.append(key + " is null ");
+			else {
+				sql.append(key + " = '" + m.get(key) + "' ");
+			}
+			index++;
+		}
+		sql.append(" order by id desc");
+
+		System.out.println("getListStr run sql:" + sql.toString());
+
+		return sql.toString();
+	}
 }

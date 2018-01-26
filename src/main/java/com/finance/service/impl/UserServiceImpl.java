@@ -21,6 +21,7 @@ import com.finance.service.UserFinanceWaterService;
 import com.finance.service.UserService;
 import com.finance.util.AssembleString;
 import com.finance.util.Page;
+import com.finance.util.exception.PojoCheckException;
 
 //required 默认
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = { Exception.class })
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		userDao.updateObject(user);
 	}
@@ -130,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public List<Integer> register(User user, List<UserAccount> userAccounts) {
+	public List<Integer> register(User user, List<UserAccount> userAccounts) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		List<Integer> ufwIds = new ArrayList<Integer>();
 		userDao.addObject(user);

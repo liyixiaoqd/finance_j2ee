@@ -46,6 +46,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- Struts2 核心依赖 -->
 		<dependency>
@@ -65,6 +66,23 @@
 			<artifactId>struts2-spring-plugin</artifactId>
 			<version>${struts.version}</version>
 		</dependency>
+
+		<!-- Struts2和Spring 测试 -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-junit-plugin</artifactId>
+			<version>${struts.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.easymock/easymock -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.4</version>
+			<scope>test</scope>
+		</dependency>
+
 		<!-- Hibernate 核心依赖 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -115,6 +133,14 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.41</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.3</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

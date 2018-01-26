@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.finance.enums.UserEnum.UserWaterType;
+import com.finance.util.exception.PojoCheckException;
 
 @Entity
 @Table(name = "user_account")
@@ -32,7 +33,7 @@ public class UserAccount {
 	@Enumerated(EnumType.STRING)
 	private UserWaterType type;
 
-	@Column(name = "value", scale = 8, precision = 2, columnDefinition = "FLOAT default 0.0", nullable = false)
+	@Column(name = "value", scale = 12, precision = 2, columnDefinition = "FLOAT default 0.0", nullable = false)
 	private float value;
 
 	@Column(name = "created_at")
@@ -45,6 +46,12 @@ public class UserAccount {
 	@Transient
 	private String reason;
 
+	public void check() throws PojoCheckException{
+		if(value<0.001){
+			throw new PojoCheckException("金额不可小于0");
+		}
+	}
+	
 	public Integer getId() {
 		return id;
 	}

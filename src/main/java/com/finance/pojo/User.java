@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.finance.util.exception.PojoCheckException;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -56,6 +58,9 @@ public class User {
 	@Transient
 	private float score;
 
+	public void check() throws PojoCheckException{
+	}
+	
 	public int getId() {
 		return id;
 	}

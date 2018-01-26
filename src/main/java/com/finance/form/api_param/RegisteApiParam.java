@@ -1,8 +1,11 @@
 package com.finance.form.api_param;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import com.finance.enums.UserEnum;
 
 /**
  * 通过接口创建用户
@@ -173,5 +176,14 @@ public class RegisteApiParam extends ApiParam {
 			System.out.println(" == String.class");
 		else
 			System.out.println(" !- Float.class " + f.getType().getSimpleName());
+		
+		String e = "score";
+		System.out.println(e.equals(UserEnum.UserWaterType.score.toString()));
+		
+		List<Integer> lis = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10);
+		System.out.println(lis.subList(0, 10));
+		
+		ModifyApiParam maParam = new ModifyApiParam();
+		maParam.checkParam();
 	}
 }

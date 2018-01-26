@@ -34,7 +34,7 @@
 	<package name="apistruts" extends="struts-default, json-default" namespace="/api">
 		<global-allowed-methods>regex:.*</global-allowed-methods>
 		<!--  api_v1_test -->
-		<action name="v1_*" class="apiActionBeanV1" method="{1}">
+		<action name="v1_*" class="apiUserActionBeanV1" method="{1}">
 			<result name="jsonReturn" type="json">
 				<param name="root">dataJson</param>
 			</result>

@@ -13,6 +13,7 @@ import com.finance.pojo.User;
 import com.finance.pojo.UserAccount;
 import com.finance.service.UserAccountService;
 import com.finance.util.AssembleString;
+import com.finance.util.exception.PojoCheckException;
 
 //required 默认
 @Transactional(propagation = Propagation.REQUIRED, readOnly = true, rollbackFor = { Exception.class })
@@ -38,7 +39,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void updateUserAccount(UserAccount userAccount) {
+	public void updateUserAccount(UserAccount userAccount) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		userAccountDao.updateObject(userAccount);
 	}
@@ -55,7 +56,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 
 	@Transactional(readOnly = false)
 	@Override
-	public void getAndUpdateTest(UserAccount userAccount) {
+	public void getAndUpdateTest(UserAccount userAccount) throws PojoCheckException {
 		// TODO Auto-generated method stub
 		userAccount = (UserAccount) userAccountDao.getById(userAccount.getId(), true);
 		System.out.println(userAccount.getValue());

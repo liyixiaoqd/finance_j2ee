@@ -7,6 +7,9 @@ public class ObtainApiParam extends ApiParam {
 	private String channel;
 	private String userid;
 	
+	//流水获取使用
+	private Integer water_no;
+	
 	public String getSystem() {
 		return system;
 	}
@@ -41,4 +44,14 @@ public class ObtainApiParam extends ApiParam {
 		return super.checkParam(fieldNames);
 	}
 
+	public Integer getWater_no() {
+		return water_no;
+	}
+
+	public void setWater_no(Integer water_no) {
+		this.water_no = water_no;
+	}
+
+
+	
 }

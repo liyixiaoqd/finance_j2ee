@@ -3,6 +3,7 @@ package com.finance.dao;
 import java.util.List;
 
 import com.finance.util.Page;
+import com.finance.util.exception.PojoCheckException;
 
 /***
  * 基本查询操作
@@ -22,6 +23,8 @@ public interface BaseDao {
 	public List<?> listObjectByPage(Page page,boolean isLock);
 	//根据SQL获取表数据-分页
 	public List<?> listByBean(String sql,Object bean, Page page,boolean isLock);
+	//根据 多条件获取数据
+	public List<?> listByPairParams(Page page,Object... pairParams);
 	
 
 	//获取表总数
@@ -29,6 +32,6 @@ public interface BaseDao {
 	public int getTotalByBean(String sql,Object bean);
 	
 	//插入表数据
-	public void addObject(Object bean);
-	public void updateObject(Object bean);
+	public void addObject(Object bean) throws PojoCheckException;
+	public void updateObject(Object bean) throws PojoCheckException;
 }

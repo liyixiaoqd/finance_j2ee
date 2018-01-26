@@ -3,20 +3,46 @@ package com.finance.form.api_param;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+
 public abstract class ApiParam {
 	protected abstract String checkParam();
 
-	public void paramTransfer(Map<String, String[]> mp) {
+	/**
+	 * 根据request.getParameterMap 进行匹配
+	 * 
+	 * @param mp
+	 */
+	public void paramTransferMap(Map<String, String[]> mp) {
 		for (Field f : this.getClass().getDeclaredFields()) {
 			f.setAccessible(true);
 			try {
 				String value = mp.get(f.getName())[0];
 				if (f.getType().getSimpleName().equals("float")) {
 					f.set(this, Float.valueOf(value));
-				} else
+				} else {
 					f.set(this, value);
+				}
 			} catch (Exception e) {
-				System.out.println("paramTransfer failure: " + f.getName() + "," + f.getType());
+				System.out.println("paramTransferMap failure: " + f.getName() + "," + f.getType());
+			}
+		}
+	}
+
+	public void paramTransferJson(JSONObject json) {
+		for (Field f : this.getClass().getDeclaredFields()) {
+			f.setAccessible(true);
+			try {
+				if (f.getType().getSimpleName().equals("float")) {
+					f.set(this, json.getFloat(f.getName()));
+				} else if (f.getType().getSimpleName().equals("Date")) {
+					f.set(this, json.getDate(f.getName()));
+				} else {
+					f.set(this, json.get(f.getName()));
+				}
+			} catch (Exception e) {
+				System.out.println("paramTransferJson failure: " + f.getName() + "," + f.getType() + ","
+						+ f.getType().getSimpleName());
 			}
 		}
 	}
@@ -25,6 +51,7 @@ public abstract class ApiParam {
 		StringBuilder checkMsg = new StringBuilder();
 
 		for (String fieldName : fieldnames) {
+			System.out.println("check "+fieldName);
 			try {
 				Field f = this.getClass().getDeclaredField(fieldName);
 				f.setAccessible(true);
@@ -43,6 +70,7 @@ public abstract class ApiParam {
 			}
 		}
 
+		System.out.println("===checkMsg===\n"+checkMsg.toString() +"===checkMsg===");
 		return checkMsg.toString();
 	}
 }
