@@ -65,7 +65,6 @@ public class ModifyApiParam extends ApiParam {
 	@Override
 	public String checkParam() {
 		// TODO Auto-generated method stub
-		System.out.println("?0");
 		return super.checkParam(fieldNames);
 	}
 

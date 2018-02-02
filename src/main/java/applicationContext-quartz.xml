@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="      
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd">
+	
+	<!-- ======================= 测试任务配置  ======================= -->
+	<!-- quartz 定时器配置 -->
+	<bean id="TimerTest" class="com.finance.timer.TimerTest" />
+
+	<!-- 1.简单触发器任务详细信息bean -->
+	<bean id="simpleJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 设置任务执行对象 -->
+		<property name="targetObject" ref="TimerTest" />
+		<!-- 设置任务执行对象中对应的执行方法 -->
+		<property name="targetMethod" value="test" />
+		<!-- 设置任务是否可并发执行，默认为不并发 -->
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 2.制定简单触发器 -->
+	<bean id="simpleTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<!-- 设置任务详细信息 -->
+		<property name="jobDetail" ref="simpleJobDetail" />
+		<!-- 设置延迟1秒开始执行,自己看情况 -->
+		<property name="startDelay" value="1000" />
+		<!-- 设置任务执行间隔，本人设置2秒执行一次 -->
+		<property name="repeatInterval" value="2000" />
+		<property name="repeatCount" value="3" />
+	</bean>
+	
+	<!-- ======================= 获取汇率定时任务 ======================= -->
+	<!-- quartz cron定时器配置 -->
+	<bean id="TimerExchangeRate" class="com.finance.timer.TimerExchangeRate" />
+
+	<!-- 1.cron触发器任务详细信息bean -->
+	<bean id="cronExchangeRateJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 设置任务执行对象 -->
+		<property name="targetObject" ref="TimerExchangeRate" />
+		<!-- 设置任务执行对象中对应的执行方法 -->
+		<property name="targetMethod" value="getExchangeRate" />
+		<!-- 设置任务是否可并发执行，默认为不并发 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 2.任务触发器 -->
+	<bean id="cronExchangeRateTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 设置任务详细信息 -->
+		<property name="jobDetail" ref="cronExchangeRateJobDetail"></property>
+		<!-- 设置quartz任务执行表达式 ,每隔三秒执行一次任务 -->
+		<property name="cronExpression" value="0 */5 9-10 * * ?"></property>
+	</bean>
+
+
+	<!-- ======================= 产生用户流水文件定时任务   ======================= -->
+	<!-- quartz cron定时器配置 -->
+	<bean id="TimerSyncFile" class="com.finance.timer.TimerSyncFile" />
+
+	<!-- 1.cron触发器任务详细信息bean -->
+	<bean id="cronSyncFileUserFinanceJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 设置任务执行对象 -->
+		<property name="targetObject" ref="TimerSyncFile" />
+		<!-- 设置任务执行对象中对应的执行方法 -->
+		<property name="targetMethod" value="genUserFinanceFile" />
+		<!-- 设置任务是否可并发执行，默认为不并发 -->
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 2.任务触发器 -->
+	<bean id="cronSyncFileUserFinanceTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 设置任务详细信息 -->
+		<property name="jobDetail" ref="cronSyncFileUserFinanceJobDetail"></property>
+		<!-- 设置quartz任务执行表达式 ,每隔三秒执行一次任务 -->
+		<property name="cronExpression" value="0 35 10 * * ?"></property>
+	</bean>
+
+
+
+	<!-- ======================= -->
+	<!-- 设置触发器调度工厂 -->
+	<bean id="schedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<!-- 触发器调度工厂调度简单触发器 -->
+				<ref bean="simpleTrigger" />
+				<ref bean="cronExchangeRateTrigger" />
+				<ref bean="cronSyncFileUserFinanceTrigger" />
+				<!--<ref bean=""> 多个触发器可以这样配置 -->
+			</list>
+		</property>
+	</bean>
+
+</beans>

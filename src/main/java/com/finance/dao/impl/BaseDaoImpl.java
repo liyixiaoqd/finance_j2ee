@@ -13,11 +13,14 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.dao.BaseDao;
 import com.finance.util.Page;
 import com.finance.util.exception.PojoCheckException;
 
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 public class BaseDaoImpl implements BaseDao {
 	@Autowired
 	protected SessionFactory sf;
@@ -118,6 +121,7 @@ public class BaseDaoImpl implements BaseDao {
 		return l.get(0).intValue();
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public void addObject(Object bean) throws PojoCheckException {
 		// TODO Auto-generated method stub

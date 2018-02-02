@@ -2,9 +2,6 @@ package com.finance.action.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +16,6 @@ import com.finance.form.api_param.ApiParam;
 public class ApiBaseAction extends ApiActionParam {
 	protected void paramToApiParam(ApiParam ap) {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		Map<String, String[]> paramMap = new HashMap<String, String[]>();
 
 		// post application/json 不自动解析,需要读取流 进行处理
 		// request.getParameter()、

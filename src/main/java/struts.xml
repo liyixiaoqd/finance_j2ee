@@ -43,6 +43,16 @@
 				<param name="errorMessage">${requestErrMsg}</param>
 			</result>
 		</action>
+		<!--  api_v1_test -->
+		<action name="v1_*" class="apiThirdServiceActionBeanV1" method="{1}">
+			<result name="jsonReturn" type="json">
+				<param name="root">dataJson</param>
+			</result>
+			<result name="RequestParamErr" type="httpheader">
+				<param name="error">400</param>
+				<param name="errorMessage">${requestErrMsg}</param>
+			</result>
+		</action>
 	</package>
 
 </struts>

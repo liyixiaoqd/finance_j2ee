@@ -133,4 +133,23 @@ public class UserFinanceWaterServiceImpl implements UserFinanceWaterService {
 		return (List<UserFinanceWater>) ufwd.listByBean(sb.toString(), null, page, false);
 	}
 
+	@Override
+	public UserFinanceWaterDao getDao(){
+		return ufwd;
+	}
+
+	@Override
+	public List<UserFinanceWater> listByDate(String procDate) {
+		// TODO Auto-generated method stub
+		StringBuilder sb = new StringBuilder("from UserFinanceWater");
+		AssembleString.conSqlAssemble(sb, "created_at >= '" + procDate +"'");
+		System.out.println("listByWaterNo sql : " + sb.toString());
+
+		List<UserFinanceWater> ufws = (List<UserFinanceWater>) ufwd.listByBean(sb.toString(), null, null, false);
+		for(UserFinanceWater ufw:ufws){
+			ufw.getUser().getId();
+		}
+		
+		return ufws;
+	}
 }

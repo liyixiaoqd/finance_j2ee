@@ -1,4 +1,4 @@
-package com.finance;
+package com.finance.action;
 
 import org.apache.struts2.StrutsSpringJUnit4TestCase;
 import org.easymock.EasyMock;

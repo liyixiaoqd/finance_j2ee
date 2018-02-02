@@ -3,9 +3,6 @@ package com.finance.action.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -13,10 +10,7 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.finance.action.param.ApiActionParam;
 import com.finance.enums.UserEnum;
-import com.finance.form.UserAddWaterForm;
-import com.finance.form.api_param.ApiParam;
 import com.finance.form.api_param.ModifyApiParam;
 import com.finance.form.api_param.ObtainApiParam;
 import com.finance.form.api_param.RegisteApiParam;
@@ -30,7 +24,7 @@ import com.finance.util.exception.ApiParamException;
 
 /***
  * API ACTION
- * 
+ * 用户相关
  * @author Liyixiao
  *
  */

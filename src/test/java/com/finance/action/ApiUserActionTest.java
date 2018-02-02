@@ -1,4 +1,4 @@
-package com.finance;
+package com.finance.action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +22,6 @@ import org.junit.Test;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.finance.enums.UserEnum;
-import com.finance.form.api_param.ModifyApiParam;
 
 public class ApiUserActionTest {
 	private final static String URL_REGISTE = "http://127.0.0.1:8080/finance/api/v1_registe";
